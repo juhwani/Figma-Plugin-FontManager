@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-family: Inter, sans-serif;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+}
+
+select {
+  width: 100%;
+  padding: 8px 32px 8px 8px; /* Increased right padding for icon */
+  margin-top: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  appearance: none; /* Remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23000000' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: #3C82FF;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23000000' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+}
+
+select:focus {
+  outline: none;
+  border-color: #3C82FF;
+  box-shadow: 0 0 0 2px rgba(60, 130, 255, 0.2);
+}
+
+button {
+  width: 100%;
+  height: 36px;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background-color: #3C82FF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #2b6ee6;
+}
+
+button:active {
+  background-color: #1a5cd1;
+}
+
+label {
+  font-weight: 500;
+  font-size: 13px;
+  color: #333;
+  display: block;
+}
+
+/* For Firefox */
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
+/* For IE/Edge */
+select::-ms-expand {
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div>
+    <label for="textType">Select Text Type:</label>
+    <select id="textType">
+      <option value="english">English</option>
+      <option value="korean">Korean</option>
+      <option value="numerical">Numerical</option>
+    </select>
+  </div>
+  <div>
+    <label for="fontFamily">Select Font:</label>
+    <select id="fontFamily">
+      <option value="Inter">Inter</option>
+      <option value="Arial">Arial</option>
+      <option value="Roboto">Roboto</option>
+      <option value="Noto Sans KR">Noto Sans KR</option>
+      <option value="Nanum Gothic">Nanum Gothic</option>
+      <option value="Optima LT Std">Optima LT Std</option>
+      <option value="Optima LT Bold">Optima LT Bold</option>
+      <option value="Optima LT Medium">Optima LT Medium</option>
+      <option value="Optima LT Demi">Optima LT Demi</option>
+      <option value="Times New Roman">Times New Roman</option>
+    </select>
+  </div>
+  <button id="applyFont">Apply Font</button>
+</div>
+
+<script>
+document.getElementById('applyFont').onclick = () => {
+  const textType = document.getElementById('textType').value;
+  const fontFamily = document.getElementById('fontFamily').value;
+  parent.postMessage({
+    pluginMessage: {
+      type: 'change-font',
+      textType,
+      fontFamily
+    }
+  }, '*');
+};
+</script>
+</body>
+</html>
