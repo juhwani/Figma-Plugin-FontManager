@@ -31,7 +31,8 @@ A Figma plugin that allows you to easily manage and change fonts for different t
 7. ALSO you need to create your own manifest.json file. I'll provide example manifest.json and what it would look like.
 
 ## Example manifest.json
-`{
+```
+{
   "name": "Font Manager",
   "id": "font-manager-plugin",
   "api": "1.0.0",
@@ -41,7 +42,8 @@ A Figma plugin that allows you to easily manage and change fonts for different t
   "networkAccess": {
     "allowedDomains": ["none"]
   }
-}`
+}
+```
 
 ## Usage
 
