@@ -5,13 +5,14 @@
 body {
   font-family: Inter, sans-serif;
   padding: 20px;
+  z-index: -10;
 }
-
 .container {
   display: flex;
   flex-direction: column;
   gap: 16px;
   max-width: 400px;
+  z-index: -9;
 }
 
 select {
@@ -30,6 +31,42 @@ select {
   cursor: pointer;
 }
 
+.result-box {
+  position: absolute; /* Change to absolute */
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0 0 4px 4px;
+  z-index: 1000; /* Add this to ensure it appears above other elements */
+  top: 90%; /* Position it right below the search box */
+  right: -1;
+  border-top: none;
+}
+.style-result-box{
+  position: absolute;
+  max-height: 100px;
+  overflow-y: scroll;
+  z-index: 5;
+  top: 90%;
+  left: -1;
+  background: white;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top: none;
+
+}
+input{
+  flex: 1;
+  height: 33px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 13.3333333333333px;
+
+}
+
 select:hover {
   border-color: #3C82FF;
   background-image: url("data:image/svg+xml;utf8,<svg fill='%23000000' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
@@ -41,8 +78,12 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(60, 130, 255, 0.2);
 }
 
-button {
-  width: 100%;
+.applyButton {
+  position: absolute;
+  z-index: 0;
+  bottom: 100px;
+  right: 29px;
+  width: 80%;
   height: 36px;
   padding: 8px;
   margin-top: 10px;
@@ -69,6 +110,68 @@ label {
   display: block;
 }
 
+
+.search-box {
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  position: relative; /* Add this */
+}
+
+.search-box:hover {
+  border-color: #3C82FF;
+}
+
+
+
+.row{
+  display: flex;
+  align-items: center;
+  padding: 0px 7px;
+  
+}
+
+
+
+.result-box ul li{
+  list-style: none;
+  border-radius: 3px;
+  padding: 5px 5px;
+  padding-bottom: 0px;
+  cursor: pointer;
+
+}
+.result-box ul, .style-result-box ul {
+  border-top: 1px solid #ccc;
+  padding: 5px 5px 5px 5px;
+  font-size: 13px;
+  margin-top: 0px;
+  padding-bottom: 0px;  
+}
+
+.result-box:empty, .style-result-box:empty {
+  border: none;
+}
+
+
+
+.style-result-box ul li{
+  list-style: none;
+  border-radius: 3px;
+  padding: 5px 5px;
+  padding-bottom: 0px;
+  cursor: pointer;
+
+}
+.search-box:hover,
+.search-box:hover .result-box,
+.search-box:hover .style-result-box {
+  border-color: #3C82FF;
+}
+
+
 /* For Firefox */
 select:-moz-focusring {
   color: transparent;
@@ -79,6 +182,7 @@ select:-moz-focusring {
 select::-ms-expand {
   display: none;
 }
+
 </style>
 </head>
 <body>
@@ -86,38 +190,197 @@ select::-ms-expand {
   <div>
     <label for="textType">Select Text Type:</label>
     <select id="textType">
-      <option value="english">English</option>
-      <option value="korean">Korean</option>
-      <option value="numerical">Numerical</option>
+      <option value="English">English</option>
+      <option value="Korean">Korean</option>
+      <option value="Numerical">Numerical</option>
     </select>
   </div>
   <div>
-    <label for="fontFamily">Select Font:</label>
-    <select id="fontFamily">
-      <option value="Inter">Inter</option>
-      <option value="Arial">Arial</option>
-      <option value="Roboto">Roboto</option>
-      <option value="Noto Sans KR">Noto Sans KR</option>
-      <option value="Nanum Gothic">Nanum Gothic</option>
-      <option value="Optima LT Std">Optima LT Std</option>
-      <option value="Optima LT Bold">Optima LT Bold</option>
-      <option value="Optima LT Medium">Optima LT Medium</option>
-      <option value="Optima LT Demi">Optima LT Demi</option>
-      <option value="Times New Roman">Times New Roman</option>
-    </select>
+    <label for="input-box">Select Font:</label>
+    <div class="search-box">
+      <div class="row">
+        <input type="text" id="input-box" placeholder="Enter your Font" autocomplete="off">
+        <svg width="15" height="15" version="1.1" viewBox="0 0 50.000001 50.000001" xmlns="http://www.w3.org/2000/svg">
+          <rect width="50" height="50" fill-opacity="0"/>
+          <path d="m18.623 4.2559c-7.9132 0-14.367 6.454-14.367 14.367 0 7.9132 6.454 14.367 14.367 14.367 3.2414 0 6.2283-1.0954 8.6367-2.918a2.0002 2.0002 0 0 0 0.15039 0.16602l14.898 14.898a2.0002 2.0002 0 1 0 2.8281 -2.8281l-14.898-14.898a2.0002 2.0002 0 0 0 -0.16602 -0.15039c1.8225-2.4084 2.918-5.3953 2.918-8.6367 0-7.9132-6.454-14.367-14.367-14.367zm0 3.5898c5.9732 0 10.777 4.8042 10.777 10.777 0 5.9732-4.8042 10.777-10.777 10.777s-10.777-4.8042-10.777-10.777c2e-7 -5.9732 4.8042-10.777 10.777-10.777z" 
+            color="#000000" 
+            color-rendering="auto" 
+            fill="#555" 
+            stroke="#555"
+            stroke-width="1.5"
+            image-rendering="auto" 
+            shape-rendering="auto" 
+            solid-color="#000000" 
+            style="block-progression:tb;isolation:auto;mix-blend-mode:normal;text-decoration-color:#000000;text-decoration-line:none;text-decoration-style:solid;text-indent:0;text-transform:none;white-space:normal"/>
+        </svg>
+      </div>
+      <div class="result-box">
+      </div>
+    </div>
+    
   </div>
-  <button id="applyFont">Apply Font</button>
+  <div class="testing">
+    <label for="input-box">Select Font Style:</label>
+
+
+  <div class="search-box">
+    <div class="row">
+      <input type="text" id="font-style" placeholder="Enter your Font Style" autocomplete="off">
+      <svg width="15" height="15" version="1.1" viewBox="0 0 50.000001 50.000001" xmlns="http://www.w3.org/2000/svg">
+        <rect width="50" height="50" fill-opacity="0"/>
+        <path d="m18.623 4.2559c-7.9132 0-14.367 6.454-14.367 14.367 0 7.9132 6.454 14.367 14.367 14.367 3.2414 0 6.2283-1.0954 8.6367-2.918a2.0002 2.0002 0 0 0 0.15039 0.16602l14.898 14.898a2.0002 2.0002 0 1 0 2.8281 -2.8281l-14.898-14.898a2.0002 2.0002 0 0 0 -0.16602 -0.15039c1.8225-2.4084 2.918-5.3953 2.918-8.6367 0-7.9132-6.454-14.367-14.367-14.367zm0 3.5898c5.9732 0 10.777 4.8042 10.777 10.777 0 5.9732-4.8042 10.777-10.777 10.777s-10.777-4.8042-10.777-10.777c2e-7 -5.9732 4.8042-10.777 10.777-10.777z" 
+          color="#000000" 
+          color-rendering="auto" 
+          fill="#555" 
+          stroke="#555"
+          stroke-width="1.5"
+          image-rendering="auto" 
+          shape-rendering="auto" 
+          solid-color="#000000" 
+          style="block-progression:tb;isolation:auto;mix-blend-mode:normal;text-decoration-color:#000000;text-decoration-line:none;text-decoration-style:solid;text-indent:0;text-transform:none;white-space:normal"/>
+      </svg>
+    </div>
+    <div class="style-result-box">
+    </div>
+  </div>
+  <button class = "applyButton" id="applyFont">Apply Font</button>
+</div>
 </div>
 
 <script>
+  window.onload = () => {
+  const resultsBox = document.querySelector('.result-box');
+  resultsBox.innerHTML = '';
+  const styleResultsBox = document.querySelector('.style-result-box');
+  styleResultsBox.innerHTML = '';
+  parent.postMessage({ pluginMessage: { type: 'ui-ready' } }, '*');
+  };
+  let fontFamilies;
+
+window.selectInput = function(listItem) {
+    const selectedFont = listItem.innerHTML;  
+    const fontStyles = fontFamilies[selectedFont];  
+    
+    const inputBox = document.getElementById('input-box');
+    inputBox.value = selectedFont;
+    
+    const resultsBox = document.querySelector('.result-box');
+    resultsBox.innerHTML = '';
+
+    const styleResultsBox = document.querySelector('.style-result-box');
+    if (fontStyles) {
+        const styleContent = fontStyles.map((style) => {
+            return "<li onClick=selectStyle(this)>" + style + "</li>";
+        });
+        styleResultsBox.innerHTML = "<ul>" + styleContent.join('') + "</ul>";
+    }
+}
+window.selectStyle = function(listItem) {
+    const selectedStyle = listItem.innerHTML;
+    
+    const styleInput = document.getElementById('font-style');
+    styleInput.value = selectedStyle;
+    
+
+    const styleResultsBox = document.querySelector('.style-result-box');
+    styleResultsBox.innerHTML = '';
+}
+
+onmessage = (event) => {
+    if (event.data.pluginMessage.type === 'font-list') {
+        fontFamilies = event.data.pluginMessage.fontFamilies;
+        
+        const fontTitles = Object.keys(fontFamilies);
+        const resultsBox = document.querySelector('.result-box');
+        const styleResultsBox = document.querySelector('.style-result-box');
+        const inputBox = document.getElementById('input-box');
+        const fontStyle = document.getElementById('font-style');
+
+        function displayFonts(result) {
+            const content = result.map((font) => {
+                return "<li onClick=selectInput(this)>" + font + "</li>";
+            });
+            resultsBox.innerHTML = "<ul>" + content.join('') + "</ul>";
+        }
+
+        function displayStyles(styles) {
+            const content = styles.map((style) => {
+                return "<li onClick=selectStyle(this)>" + style + "</li>";
+            });
+            styleResultsBox.innerHTML = "<ul>" + content.join('') + "</ul>";
+        }
+
+        // Search fonts
+        inputBox.onkeyup = function() {
+            let result = [];
+            let input = inputBox.value;
+            if(input.length) {
+                result = fontTitles.filter((keyword) => {
+                    return keyword.toLowerCase().includes(input.toLowerCase());
+                });
+                displayFonts(result);
+                if (!result.length) {
+                    resultsBox.innerHTML = "";
+                }
+            } else {
+                resultsBox.innerHTML = '';
+                
+            }
+        }
+
+        // Search styles (if needed)
+        fontStyle.onkeyup = function() {
+    let result = [];
+    let styleInput = fontStyle.value;
+    let currentFont = inputBox.value;
+    
+    if(styleInput.length && currentFont && fontFamilies[currentFont]) {
+        result = fontFamilies[currentFont].filter((style) => {
+            return style.toLowerCase().includes(styleInput.toLowerCase());
+        });
+        if (!result.length) {
+            displayStyles(fontFamilies[currentFont])
+        }
+        else {
+            displayStyles(result);
+        }
+    } else if(currentFont && fontFamilies[currentFont]) {
+        // Show all styles for current font when input is empty
+        displayStyles(fontFamilies[currentFont]);
+    } else {
+        styleResultsBox.innerHTML = '';
+    }
+}
+
+fontStyle.onblur = function() {
+    setTimeout(() => {
+        styleResultsBox.innerHTML = '';
+    }, 200);
+}
+inputBox.onblur = function() {
+    setTimeout(() => {
+        resultsBox.innerHTML = '';
+    }, 200);
+}
+
+styleResultsBox.onmousedown = function(e) {
+    e.preventDefault();
+}
+    }
+}
+
 document.getElementById('applyFont').onclick = () => {
   const textType = document.getElementById('textType').value;
-  const fontFamily = document.getElementById('fontFamily').value;
+  const fontFamily = document.getElementById('input-box').value;
+  const selectedFont = document.getElementById('input-box').value;
+  const selectedStyle = document.getElementById('font-style').value;
+
   parent.postMessage({
     pluginMessage: {
       type: 'change-font',
       textType,
-      fontFamily
+      selectedFont,
+      selectedStyle
     }
   }, '*');
 };
